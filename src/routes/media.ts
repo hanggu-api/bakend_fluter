@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { authMiddleware, AuthRequest } from '../middleware/authMiddleware';
 import multer from 'multer';
-import sharp from 'sharp';
+let sharp: any = null;
+try { sharp = require('sharp'); } catch { sharp = null; }
 import { UserRepository } from '../repositories/userRepository';
 import { ServiceRepository } from '../repositories/serviceRepository';
 import { redis } from '../platform';
@@ -34,6 +35,10 @@ router.post('/avatar', authMiddleware, upload.single('file'), async (req: Reques
     }
     if (!req.file) {
       res.status(400).json({ success: false, message: 'No file provided' });
+      return;
+    }
+    if (!sharp) {
+      res.status(501).json({ success: false, message: 'Image processing unavailable' });
       return;
     }
     const thumbWebp = await sharp(req.file.buffer).resize(128, 128, { fit: 'cover' }).webp({ quality: 80 }).toBuffer();
@@ -71,6 +76,10 @@ router.post('/chat/image', authMiddleware, upload.single('file'), async (req: Re
     const serviceId = (req.body.serviceId || req.query.serviceId) as string | undefined;
     if (!req.file || !serviceId) {
       res.status(400).json({ success: false, message: 'Missing file or serviceId' });
+      return;
+    }
+    if (!sharp) {
+      res.status(501).json({ success: false, message: 'Image processing unavailable' });
       return;
     }
     const key = `chat/${serviceId}/${uuidv4()}.webp`;
