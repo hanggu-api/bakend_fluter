@@ -1,10 +1,22 @@
 {
   "version": 2,
   "builds": [
-    { "src": "api/**/*.ts", "use": "@vercel/node@2" }
+    {
+      "src": "api/**/*.ts",
+      "use": "@vercel/node@2",
+      "config": {
+        "nodeVersion": "18.x"
+      }
+    }
+  ],
+  "crons": [
+    // ... outras configurações de cron se houver
   ],
   "rewrites": [
     { "source": "/health", "destination": "/api/health.ts" },
     { "source": "/(.*)", "destination": "/api/index.ts" }
-  ]
+  ],
+  "engines": {
+    "node": "18.x"
+  }
 }
