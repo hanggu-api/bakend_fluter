@@ -9,9 +9,7 @@
       }
     }
   ],
-  "crons": [
-    // ... outras configurações de cron se houver
-  ],
+  
   "rewrites": [
     { "source": "/health", "destination": "/api/health.ts" },
     { "source": "/(.*)", "destination": "/api/index.ts" }
