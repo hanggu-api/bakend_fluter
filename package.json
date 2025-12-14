@@ -12,6 +12,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "18.x"
+  },
   "type": "commonjs",
   "dependencies": {
     "@types/uuid": "^10.0.0",
